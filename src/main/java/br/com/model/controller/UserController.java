@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,8 +34,8 @@ public class UserController {
 	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
 	@PostMapping("/update")
 	@ResponseBody
-	public void updateUser(@RequestBody UserDTO user) {
-		userService.updateUser(user);
+	public void updateUser(@RequestBody UserDTO user, @AuthenticationPrincipal Jwt jwt) {
+		userService.updateUser(user, jwt.getClaimAsString("id"));
 	}
 	
 	@PostMapping("/register")

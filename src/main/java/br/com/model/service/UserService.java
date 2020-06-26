@@ -39,18 +39,15 @@ public class UserService {
 		return userRepository.findAll().stream().map(u -> modelMapper.map(u, UserDTO.class)).collect(Collectors.toList());
 	}
 	
-	public void updateUser (UserDTO user) {
-		try {
-			User usr = modelMapper.map(user, User.class);
-			User usrSave = userRepository.findById(user.getId()).get();
-			usr.setAuthority(usrSave.getAuthority());
-			usr.setPassword(usrSave.getPassword());
-			userRepository.save(usr);
-		} catch (Exception e) {
-			String msg = "user.update.faile";
-			LOGGER.error(Translator.toLocale(msg), e);
-			throw new BusinessRunTimeException(msg);
+	public void updateUser (UserDTO user, String userId) {
+		if (user.getId() == null || !user.getId().equals(Integer.valueOf(userId))) {
+			throw new BusinessRunTimeException("user.update.notAllowed");
 		}
+		User usr = modelMapper.map(user, User.class);
+		User usrSave = userRepository.findById(user.getId()).get();
+		usr.setAuthority(usrSave.getAuthority());
+		usr.setPassword(usrSave.getPassword());
+		userRepository.save(usr);
 	}
 	
 	public void registerUser (RegisterDTO user) {
