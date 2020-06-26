@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Sort;
 
 import br.com.model.dto.PartnerDTO;
 import br.com.model.exception.BusinessRunTimeException;
@@ -28,7 +29,11 @@ public class PartnerService {
 	
 	
 	public List<PartnerDTO> getAll () {
-		return partnerRepository.findAll().stream().map(u -> modelMapper.map(u, PartnerDTO.class)).collect(Collectors.toList());
+		Sort.by("");
+		return partnerRepository.findAll(Sort.by("position").ascending().and(Sort.by("name")))
+				.stream()
+				.map(u -> modelMapper.map(u, PartnerDTO.class))
+				.collect(Collectors.toList());
 	}
 	
 	public void savePartner (PartnerDTO partner) {

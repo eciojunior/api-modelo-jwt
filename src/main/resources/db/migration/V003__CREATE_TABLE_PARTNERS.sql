@@ -3,7 +3,8 @@ create table public.partner (
   name varchar not null,
   photo varchar not null,
   redirect varchar not null,
-  cashback int
+  cashback int,
+  position int
 );
 
 create table public.configuration (
