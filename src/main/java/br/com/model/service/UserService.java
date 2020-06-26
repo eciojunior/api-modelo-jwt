@@ -46,8 +46,9 @@ public class UserService {
 			usr.setPassword(password);
 			userRepository.save(usr);
 		} catch (Exception e) {
-			LOGGER.error(Translator.toLocale("user.update.faile"), e);
-			throw new BusinessRunTimeException("user.update.failed");
+			String msg = "user.update.faile";
+			LOGGER.error(Translator.toLocale(msg), e);
+			throw new BusinessRunTimeException(msg);
 		}
 	}
 	
@@ -59,8 +60,9 @@ public class UserService {
 			usr.setAvailable(true);
 			userRepository.save(usr);	
 		} catch (Exception e ) {
-			LOGGER.error(Translator.toLocale("user.register.faile"), e);
-			throw new BusinessRunTimeException("user.register.failed");
+			String msg = "user.register.failed";
+			LOGGER.error(Translator.toLocale(msg), e);
+			throw new BusinessRunTimeException(msg);
 		}
 	}
 }

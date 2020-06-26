@@ -1,7 +1,10 @@
 package br.com.model.persistence.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import lombok.Data;
@@ -13,6 +16,8 @@ import lombok.Data;
 public class User {
 	
 	@Id
+	@SequenceGenerator(name="user_pk_sequence",sequenceName="user_id_seq", allocationSize=1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="user_pk_sequence")
 	private Integer id;
 	private String name;
 	private Boolean available;
@@ -20,6 +25,7 @@ public class User {
 	private String cel;
 	private String password;
 	private String wallet;
+	private String photo;
 	private String authority;
 	private Integer indicate;
 

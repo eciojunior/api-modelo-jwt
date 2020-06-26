@@ -2,6 +2,9 @@ package br.com.model.service;
 
 import java.util.Map;
 
+import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -15,6 +18,9 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import br.com.model.dto.LoginDTO;
+import br.com.model.dto.UserDTO;
+import br.com.model.exception.BusinessRunTimeException;
+import br.com.model.persistence.repository.UserRepository;
 import br.com.model.util.Translator;
 
 @Service
@@ -22,6 +28,12 @@ public class LoginService {
 
 	@Autowired
 	RestTemplate restTemplate;
+	
+	@Autowired
+	UserRepository userRepository;
+	
+	@Autowired
+	ModelMapper modelMapper;
 	
 	@Value("${apimodel.auth.url}")
 	String authUrl;
@@ -31,6 +43,20 @@ public class LoginService {
 	
 	@Value("${apimodel.auth.grantType}")
 	String authGrantType;
+	
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(LoginService.class);
+	
+	
+	public UserDTO getUser(Integer id) {
+		try {
+			return modelMapper.map(userRepository.findById(id).get(), UserDTO.class);	
+		} catch (Exception e) {
+			String msg = "login.user.notFound";
+			LOGGER.error(Translator.toLocale(msg), e);
+			throw new BusinessRunTimeException(msg);
+		}		
+	}
 	
 	public Map<String, Object> login (LoginDTO user) {
 		
