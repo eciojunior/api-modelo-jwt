@@ -10,27 +10,26 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import br.com.model.dto.RegisterDTO;
-import br.com.model.dto.UserDTO;
-import br.com.model.service.UserService;
+import br.com.model.dto.PartnerDTO;
+import br.com.model.service.PartnerService;
 
 @Controller
-@RequestMapping("user")
+@RequestMapping("partner")
 public class PartnerController {
 	
 	@Autowired
-	UserService userService;
+	PartnerService partnerService;
 	
 	@GetMapping("/all")
 	@ResponseBody
-	public List<UserDTO> login () {
-		return userService.getAll();
+	public List<PartnerDTO> login () {
+		return partnerService.getAll();
 	}
 		
 	@PostMapping("/register")
 	@ResponseBody
-	public void registerUser(@RequestBody RegisterDTO user) {
-		userService.registerUser(user);
+	public void registerPartner(@RequestBody PartnerDTO ptr) {
+		partnerService.savePartner(ptr);
 	}
 	
 }

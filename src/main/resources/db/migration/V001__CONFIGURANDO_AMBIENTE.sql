@@ -3,11 +3,11 @@ create table public.user (
    name VARCHAR not null,
    email VARCHAR not null,
    cel varchar,
-   password varchar  not null,
+   password varchar not null,
    wallet varchar,
-   photo varchar,
-   available boolean not null default false,
+   available boolean not null default true,
    authority VARCHAR not null default  'User',
+   photo varchar,
    indicate int,
    CONSTRAINT unq_email UNIQUE(email)
 );
