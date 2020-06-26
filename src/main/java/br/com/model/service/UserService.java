@@ -42,8 +42,9 @@ public class UserService {
 	public void updateUser (UserDTO user) {
 		try {
 			User usr = modelMapper.map(user, User.class);
-			String password = userRepository.findById(user.getId()).get().getPassword();
-			usr.setPassword(password);
+			User usrSave = userRepository.findById(user.getId()).get();
+			usr.setAuthority(usrSave.getAuthority());
+			usr.setPassword(usrSave.getPassword());
 			userRepository.save(usr);
 		} catch (Exception e) {
 			String msg = "user.update.faile";
