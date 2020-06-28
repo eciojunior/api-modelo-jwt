@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import br.com.model.dto.ChangePasswordDTO;
 import br.com.model.dto.ConfigurationDTO;
 import br.com.model.dto.RegisterDTO;
 import br.com.model.dto.UserDTO;
@@ -35,6 +36,18 @@ public class UserService {
 	ModelMapper modelMapper;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
+	
+	public void changePassword (ChangePasswordDTO pass, String id) {
+		User user = userRepository.findById(Integer.valueOf(id)).orElse(null);
+		if (pass.getPassword() == null || pass.getOldPassword() == null) {
+			throw new BusinessRunTimeException("user.password.change.failed");
+		}
+		if (user.getPassword().equals(passwordEncoder.encode(pass.getOldPassword()))) {
+			throw new BusinessRunTimeException("user.password.incorrect");
+		}
+		user.setPassword(passwordEncoder.encode(pass.getPassword()));
+		userRepository.save(user);
+	}
 	
 	public ConfigurationDTO getDefaultCashback () {
 		return modelMapper.map(configurationRepository.findById("DEFAULT_CASHBACK_USER").orElse(null)

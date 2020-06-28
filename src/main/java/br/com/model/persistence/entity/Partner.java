@@ -17,8 +17,8 @@ import lombok.Data;
 public class Partner {
 	
 	@Id
-	@SequenceGenerator(name="pk_sequence",sequenceName="partner_id_seq", allocationSize=1)
-	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="pk_sequence")
+	@SequenceGenerator(name="partner_id_seq",sequenceName="partner_id_seq", allocationSize=1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="partner_id_seq")
 	private Integer id;
 	private String name;
 	private String photo;

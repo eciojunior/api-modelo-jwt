@@ -16,8 +16,8 @@ import lombok.Data;
 public class User {
 	
 	@Id
-	@SequenceGenerator(name="pk_sequence",sequenceName="user_id_seq", allocationSize=1)
-	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="pk_sequence")
+	@SequenceGenerator(name="user_id_seq",sequenceName="user_id_seq", allocationSize=1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="user_id_seq")
 	private Integer id;
 	private String name;
 	private Boolean available;
