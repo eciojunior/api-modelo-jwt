@@ -10,10 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import br.com.model.dto.ConfigurationDTO;
 import br.com.model.dto.RegisterDTO;
 import br.com.model.dto.UserDTO;
 import br.com.model.exception.BusinessRunTimeException;
 import br.com.model.persistence.entity.User;
+import br.com.model.persistence.repository.ConfigurationRepository;
 import br.com.model.persistence.repository.UserRepository;
 import br.com.model.util.Translator;
 
@@ -27,9 +29,17 @@ public class UserService {
 	PasswordEncoder passwordEncoder;
 	
 	@Autowired
+	ConfigurationRepository configurationRepository;
+	
+	@Autowired
 	ModelMapper modelMapper;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
+	
+	public ConfigurationDTO getDefaultCashback () {
+		return modelMapper.map(configurationRepository.findById("DEFAULT_CASHBACK_USER").orElse(null)
+				, ConfigurationDTO.class);
+	}
 	
 	public User getUser (Integer id) {
 		return userRepository.findById(id).orElse(null);

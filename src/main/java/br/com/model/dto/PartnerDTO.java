@@ -15,4 +15,6 @@ public class PartnerDTO implements Serializable{
 	private String photo;
 	private String redirect;
 	private Integer cashback;
+	private Integer userCashback;
+	private Integer position;
 }

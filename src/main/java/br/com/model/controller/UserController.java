@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import br.com.model.dto.ConfigurationDTO;
 import br.com.model.dto.RegisterDTO;
 import br.com.model.dto.UserDTO;
 import br.com.model.service.UserService;
@@ -42,6 +43,13 @@ public class UserController {
 	@ResponseBody
 	public void registerUser(@RequestBody RegisterDTO user) {
 		userService.registerUser(user);
+	}
+	
+	
+	@GetMapping("/cashback/default")
+	@ResponseBody
+	public ConfigurationDTO getDefaultCashback () {
+		return userService.getDefaultCashback();
 	}
 	
 }

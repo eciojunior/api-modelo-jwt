@@ -4,6 +4,7 @@ create table public.partner (
   photo varchar not null,
   redirect varchar not null,
   cashback int,
+  user_cashback int,
   position int
 );
 

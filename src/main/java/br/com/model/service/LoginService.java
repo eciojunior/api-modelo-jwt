@@ -11,7 +11,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -59,25 +58,27 @@ public class LoginService {
 	}
 	
 	public Map<String, Object> login (LoginDTO user) {
-		
-		String url = authUrl + "/oauth/token";
-		
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-		headers.add("Authorization", "Basic " + authAuthorization);
-		
+		try {
+			String url = authUrl + "/oauth/token";
+			HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(getBody(user), getHeaders());
+		    return restTemplate.exchange(url, HttpMethod.POST, request, Map.class).getBody();	       
+		} catch (Exception e) {
+			throw new RuntimeException(Translator.toLocale("login.failed")); 
+		}
+	}
+	
+	private MultiValueMap<String, String> getBody (LoginDTO user) {
 		MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
 		body.add("username", user.getEmail());
 		body.add("password", user.getPassword());
 		body.add("grant_type", authGrantType);
-		
-		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, headers);
-		
-	    ResponseEntity<Map> result = restTemplate.exchange(url, HttpMethod.POST, request, Map.class);
-
-	    if (!result.getStatusCode().is2xxSuccessful()) {
-	    	throw new RuntimeException(Translator.toLocale("login.failed"));    
-	    }
-	    return result.getBody();
+		return body;
+	}
+	
+	private HttpHeaders getHeaders () {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+		headers.add("Authorization", "Basic " + authAuthorization);
+		return headers;
 	}
 }

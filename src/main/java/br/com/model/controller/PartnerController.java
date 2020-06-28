@@ -31,5 +31,5 @@ public class PartnerController {
 	public void registerPartner(@RequestBody PartnerDTO ptr) {
 		partnerService.savePartner(ptr);
 	}
-	
+
 }
