@@ -12,6 +12,5 @@ create table oauth_client_details (
   autoapprove varchar(256)
 );
 
-
 insert into oauth_client_details (client_id, resource_ids, client_secret, scope, authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity, refresh_token_validity, autoapprove)
 values ('webmodel', null, '$2y$12$cImoy7EIFO9EzjcenRQKYOWAn6FIbBtrxRZtZOrSSVaNp.DfRX6CO', 'READ,WRITE', 'password', null, null, 21600, 2592000, null);

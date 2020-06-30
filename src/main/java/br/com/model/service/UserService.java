@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.model.dto.ChangePasswordDTO;
 import br.com.model.dto.ConfigurationDTO;
+import br.com.model.dto.IndicateDTO;
 import br.com.model.dto.RegisterDTO;
 import br.com.model.dto.UserDTO;
 import br.com.model.exception.BusinessRunTimeException;
@@ -36,6 +37,21 @@ public class UserService {
 	ModelMapper modelMapper;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
+	
+	public IndicateDTO getUserIndicate (Integer id) {
+		if (id == null) {
+			return null;
+		}
+		User user = userRepository.findById(id).orElse(null);
+		IndicateDTO teste = modelMapper.map(user, IndicateDTO.class);
+		return teste;
+	}
+	
+	public void changeAuthority (Integer id, String authority) {
+		User user = userRepository.findById(id).orElse(null);
+		user.setAuthority(authority);
+		userRepository.save(user);
+	}
 	
 	public void changePassword (ChangePasswordDTO pass, String id) {
 		User user = userRepository.findById(Integer.valueOf(id)).orElse(null);
