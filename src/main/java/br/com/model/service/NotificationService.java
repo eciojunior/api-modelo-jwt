@@ -30,7 +30,7 @@ public class NotificationService {
 				.map(n -> modelMapper.map(n, NotificationDTO.class))
 				.collect(Collectors.toList());
 		
-		return Stream.concat(notRead.stream(), read.stream()).collect(Collectors.toList());
+		return Stream.concat(read.stream(), notRead.stream()).collect(Collectors.toList());
 			
 	}
 }
