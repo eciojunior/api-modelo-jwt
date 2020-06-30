@@ -1,5 +1,6 @@
 package br.com.model.persistence.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -13,4 +14,5 @@ import br.com.model.persistence.entity.User;
 @Transactional
 public interface UserRepository extends JpaRepository<User, Integer> {
 	Optional<User> findByEmail(String email);
+	List<User> findByIndicate (Integer id);
 }

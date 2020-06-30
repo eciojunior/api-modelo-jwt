@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import br.com.model.config.enums.NotificationTypeEnum;
 import br.com.model.dto.ChangePasswordDTO;
 import br.com.model.dto.ConfigurationDTO;
 import br.com.model.dto.IndicateDTO;
@@ -34,9 +35,19 @@ public class UserService {
 	ConfigurationRepository configurationRepository;
 	
 	@Autowired
+	NotificationService notificationService;
+	
+	@Autowired
 	ModelMapper modelMapper;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
+	
+
+	public List<IndicateDTO> getIndicateUser (Integer id) {
+		return userRepository.findByIndicate(id).stream()
+				.map(u -> modelMapper.map(u, IndicateDTO.class))
+				.collect(Collectors.toList());
+	}
 	
 	public IndicateDTO getUserIndicate (Integer id) {
 		if (id == null) {
@@ -95,7 +106,11 @@ public class UserService {
 			usr.setAuthority("User");
 			usr.setPassword(passwordEncoder.encode(user.getPassword()));
 			usr.setAvailable(true);
-			userRepository.save(usr);	
+			userRepository.save(usr);
+			if (usr.getIndicate() != null) {
+				String body = "O usuário " + usr.getName() + " que você indicou se cadastrou na ferramenta. Assim que ele efetivar seu cadastro seu bônus será creditado!";
+				notificationService.sendNotification(usr.getIndicate(), "Usuário entrou na aplicação!", body, NotificationTypeEnum.INDICATE_REGISTER);
+			}
 		} catch (Exception e ) {
 			String msg = "user.register.failed";
 			LOGGER.error(Translator.toLocale(msg), e);

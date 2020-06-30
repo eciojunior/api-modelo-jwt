@@ -40,6 +40,18 @@ public class UserController {
 		return notificationService.getUserNotification(id);
 	}
 	
+	@GetMapping("/indicate")
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
+	public List<IndicateDTO> getIndicate (@AuthenticationPrincipal Jwt jwt) {
+		Integer id = Integer.valueOf(jwt.getClaimAsString("id"));
+		return userService.getIndicateUser(id);
+	}
+	
+	@GetMapping("/notification/read/{id}")
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
+	public void readNotification (@PathVariable Integer id) {
+		notificationService.readNotification(id);
+	}
 	@GetMapping("/all")
 	@PreAuthorize("hasAuthority('ADMIN')")
 	public List<UserDTO> login () {
